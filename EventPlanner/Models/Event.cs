@@ -7,6 +7,7 @@ public class Event
     public string EventDescription { get; set; }
     public DateTime EventDate { get; set; }
     public double TicketPrice { get; set; }
-    public List<EventCategory> Categories { get; set; }
-    
+    public Category EventCategory { get; set; }
+    public Organiser EventOrganiser { get; set; }
+    public ICollection<Ticket> PurchasedTickets { get; set; }
 }

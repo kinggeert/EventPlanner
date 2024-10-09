@@ -21,24 +21,31 @@ public class EventDb : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Event>().Property(e => e.EventName).HasMaxLength(30);
-        modelBuilder.Entity<Event>().Property(e => e.EventDescription).HasMaxLength(200);
-
-        EventCategory eventCategory = new EventCategory() { CategoryId = 1, CategoryName = "TestCategory" };
-
-        List<EventCategory> eventCategories = new List<EventCategory>();
-        eventCategories.Add(eventCategory);
-        Event eventA = new Event()
+        modelBuilder.Entity<Event>(Entity =>
         {
-            EventId = 1,
-            EventName = "Test Event",
-            EventDescription = "Description of test event",
-            EventDate = DateTime.Today,
-            Categories = eventCategories,
-            TicketPrice = 10
-        };
+            Entity.Property(e => e.EventName).HasMaxLength(30);
+            Entity.HasOne(e => e.EventCategory)
+                .WithMany(e => e.Events);
+        });
 
-        modelBuilder.Entity<EventCategory>().HasData(eventCategory);
-        modelBuilder.Entity<Event>().HasData(eventA);
+        modelBuilder.Entity<Category>(Entity =>
+        {
+            Entity.HasMany(e => e.Events)
+                .WithOne(e => e.EventCategory);
+        });
+
+        modelBuilder.Entity<Ticket>(Entity =>
+        {
+            Entity.HasOne(e => e.Event)
+                .WithMany(e => e.PurchasedTickets);
+            Entity.HasOne(e => e.CustomerBillingAddress);
+        });
+
+        modelBuilder.Entity<Organiser>(Entity =>
+        {
+            Entity.HasMany(e => e.OrganisedEvents)
+                .WithOne(e => e.EventOrganiser);
+        });
+
     }
 }
