@@ -10,4 +10,5 @@ public class Event
     public Category EventCategory { get; set; }
     public Organiser EventOrganiser { get; set; }
     public ICollection<Ticket> PurchasedTickets { get; set; }
+    public int AvailableTickets { get; set; }
 }

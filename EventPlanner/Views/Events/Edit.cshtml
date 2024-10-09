@@ -34,6 +34,11 @@
                 <span asp-validation-for="TicketPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="AvailableTickets" class="control-label"></label>
+                <input asp-for="AvailableTickets" class="form-control" />
+                <span asp-validation-for="AvailableTickets" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
