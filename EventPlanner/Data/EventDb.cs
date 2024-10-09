@@ -48,4 +48,6 @@ public class EventDb : DbContext
         });
 
     }
+
+public DbSet<EventPlanner.Models.Category> Category { get; set; } = default!;
 }
