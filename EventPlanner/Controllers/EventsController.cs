@@ -22,7 +22,9 @@ namespace EventPlanner.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            return View(await _context.Events
+                .Include(e => e.EventCategory)
+                .ToListAsync());
         }
 
         // GET: Events/Details/5

@@ -1,10 +1,10 @@
 @model IEnumerable<EventPlanner.Models.Event>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Events";
 }
 
-<h1>Index</h1>
+<h1>Events</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,19 +13,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EventName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AvailableTickets)
             </th>
             <th></th>
         </tr>
@@ -33,25 +28,27 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableTickets)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+            <td colspan="6" style="padding: 0;">
+                <a asp-action="Details" asp-route-id="@item.EventId" style="display: block; text-decoration: none; color: inherit;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                <h3>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+                                </h3>
+                                @Html.DisplayFor(modelItem => item.EventDescription)
+                            </td>
+                            <td>
+                                €@Html.DisplayFor(modelItem => item.TicketPrice)
+                            </td>
+                            <td>
+                                @item.EventDate.ToString("dd-MM-yyyy")
+                                <br/>
+                                @Html.DisplayFor(modelItem => item.EventCategory.CategoryName)
+                            </td>
+                        </tr>
+                    </table>
+                </a>
             </td>
         </tr>
 }
