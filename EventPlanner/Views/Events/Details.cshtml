@@ -4,38 +4,31 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>
+    @Html.DisplayFor(model => model.EventName)
+</h1>
 
 <div>
-    <h4>Event</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDescription)
-        </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EventDescription)
         </dd>
+        <br>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDate)
+            Date:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EventDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPrice)
+            Ticket price:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TicketPrice)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailableTickets)
+            Remaining tickets:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AvailableTickets)
