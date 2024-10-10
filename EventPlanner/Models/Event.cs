@@ -11,4 +11,14 @@ public class Event
     public Organiser EventOrganiser { get; set; }
     public ICollection<Ticket> PurchasedTickets { get; set; }
     public int AvailableTickets { get; set; }
+
+    /// <summary>
+    /// Returns the amount of tickets remaining for the event.
+    /// </summary>
+    /// <returns></returns>
+    public int GetRemainingTickets()
+    {
+        int Remaning = AvailableTickets - PurchasedTickets.Count;
+        return Remaning;
+    }
 }
