@@ -36,6 +36,7 @@ namespace EventPlanner.Controllers
             }
 
             var @event = await _context.Events
+                .Include(e => e.PurchasedTickets)
                 .FirstOrDefaultAsync(m => m.EventId == id);
             if (@event == null)
             {
