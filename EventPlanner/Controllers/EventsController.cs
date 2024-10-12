@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventPlanner.Data;
 using EventPlanner.Models;
+using EventPlanner.ViewModels;
 
 namespace EventPlanner.Controllers
 {
@@ -150,6 +151,53 @@ namespace EventPlanner.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Purchase(int? id)
+        {
+            if (id == null) return NotFound();
+            
+            var @event = _context.Events.Find(id);
+
+            if (@event == null) return NotFound();
+
+            var eventTicketViewModel = new EventTicketViewModel()
+            {
+                Event = @event,
+                Ticket = new Ticket
+                {
+                CustomerBillingAddress = new Address(),
+                Event = @event
+                }
+            };
+            return View("Purchase", eventTicketViewModel);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Purchase(EventTicketViewModel eventTicketViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                eventTicketViewModel.Ticket.Event = _context.Events.Find(eventTicketViewModel.Event.EventId);
+                eventTicketViewModel.Ticket.PurchaseDate = DateTime.Now;
+                
+                // Add the ticket to the database
+                _context.Add(eventTicketViewModel.Ticket);
+                await _context.SaveChangesAsync();
+
+                // Redirect to a success page
+                return RedirectToAction("PurchaseSuccess");
+            }
+            
+            // If model state is invalid, return the same view with validation errors
+            return View(eventTicketViewModel);
+        }
+
+        public IActionResult PurchaseSuccess()
+        {
+            return View();
         }
 
         private bool EventExists(int id)

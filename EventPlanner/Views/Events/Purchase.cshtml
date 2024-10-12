@@ -1,0 +1,47 @@
+@model EventPlanner.ViewModels.EventTicketViewModel
+
+@{
+    
+}
+
+<h1>Purchase ticket for @Html.DisplayFor((model) => model.Event.EventName)</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Purchase" method="post">
+            
+            <input type="hidden" asp-for="Ticket.Event.EventId" />
+            <input type="hidden" asp-for="Event.EventId" />
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ticket.CustomerName" class="control-label"></label>
+                <input asp-for="Ticket.CustomerName" class="form-control"/>
+                <span asp-validation-for="Ticket.CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ticket.CustomerEmail" class="control-label"></label>
+                <input asp-for="Ticket.CustomerEmail" class="form-control"/>
+                <span asp-validation-for="Ticket.CustomerEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ticket.CustomerBillingAddress.Country" class="control-label"></label>
+                <input asp-for="Ticket.CustomerBillingAddress.Country" class="form-control"/>
+                <span asp-validation-for="Ticket.CustomerBillingAddress.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ticket.CustomerBillingAddress.AddressLine" class="control-label"></label>
+                <input asp-for="Ticket.CustomerBillingAddress.AddressLine" class="form-control"/>
+                <span asp-validation-for="Ticket.CustomerBillingAddress.AddressLine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ticket.CustomerBillingAddress.PostalCode" class="control-label"></label>
+                <input asp-for="Ticket.CustomerBillingAddress.PostalCode" class="form-control"/>
+                <span asp-validation-for="Ticket.CustomerBillingAddress.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Purchase" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
