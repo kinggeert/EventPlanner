@@ -18,6 +18,9 @@
             @Html.DisplayFor(model => model.EventName)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EventCategory.CategoryName)
+        </dt>        
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.EventDescription)
         </dt>
         <dd class = "col-sm-10">
@@ -46,6 +49,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="EventId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Dashboard">Back to List</a>
     </form>
 </div>

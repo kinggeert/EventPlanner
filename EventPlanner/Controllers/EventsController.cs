@@ -113,7 +113,7 @@ namespace EventPlanner.Controllers
                     await _context.Organiser.FindAsync(viewModel.Organiser.OrganiserId);
                 _context.Add(viewModel.Event);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Dashboard");
             }
             return View(viewModel);
         }
@@ -126,7 +126,7 @@ namespace EventPlanner.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
+            var @event = await _context.Events.Include(@event => @event.EventOrganiser).FirstOrDefaultAsync(m => m.EventId == id);
             if (@event == null)
             {
                 return NotFound();
@@ -140,7 +140,7 @@ namespace EventPlanner.Controllers
             }
             var organiserId = organiserIdNullable.Value;
             Organiser organiser = _context.Organiser.Find(organiserId);
-            if (organiser == null)
+            if (@event.EventOrganiser.OrganiserId != organiser.OrganiserId || organiser == null)
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -191,7 +191,7 @@ namespace EventPlanner.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Dashboard");
             }
             return View(viewModel);
         }
@@ -205,10 +205,24 @@ namespace EventPlanner.Controllers
             }
 
             var @event = await _context.Events
+                .Include(e => e.EventCategory)
+                .Include(e => e.EventOrganiser)
                 .FirstOrDefaultAsync(m => m.EventId == id);
             if (@event == null)
             {
                 return NotFound();
+            }
+            
+            // Check if the user owns the event
+            var organiserIdNullable = HttpContext.Session.GetInt32("OrganiserID");
+            if (!organiserIdNullable.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var organiserId = organiserIdNullable.Value;
+            if (organiserId != @event.EventOrganiser.OrganiserId)
+            {
+                return RedirectToAction("Login", "Account");
             }
 
             return View(@event);
