@@ -10,7 +10,20 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<EventDb>();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
         
+        // Fix infinite cycle on n:n relations
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System
+                .Text
+                .Json
+                .Serialization
+                .ReferenceHandler
+                .IgnoreCycles;
+        });
+
         // Add session services
         builder.Services.AddDistributedMemoryCache(); // Required for session state
         builder.Services.AddSession(options =>
@@ -30,7 +43,16 @@ public class Program
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        app.UseSwagger();
+        app.UseSwaggerUI(
+            (config) =>
+            {
+                config.SwaggerEndpoint("v1/swagger.json", "Event Planner");
+                config.RoutePrefix = "swagger";
+            }
+        );
+
+    app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
