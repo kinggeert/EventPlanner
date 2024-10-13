@@ -25,6 +25,7 @@ namespace EventPlanner.Controllers
         {
             return View(await _context.Events
                 .Where(e => e.EventDate >= DateTime.Today)
+                .OrderBy(e => e.EventDate)
                 .Include(e => e.EventCategory)
                 .ToListAsync());
         }
@@ -42,6 +43,7 @@ namespace EventPlanner.Controllers
             // Get events for the logged-in organizer
             var events = _context.Events
                 .Where(e => e.EventOrganiser.OrganiserId == organiserId)
+                .OrderBy(e => e.EventDate)
                 .Include(e => e.EventCategory)
                 .Include(e => e.PurchasedTickets)
                 .ToList();
