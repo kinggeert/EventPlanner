@@ -33,12 +33,10 @@ namespace EventPlanner.Controllers
         {
             // Retrieve OrganizerID from session
             var organiserIdNullable = HttpContext.Session.GetInt32("OrganiserID");
-
             if (!organiserIdNullable.HasValue)
             {
                 return RedirectToAction("Login", "Account");
             }
-
             var organiserId = organiserIdNullable.Value;
             
             // Get events for the logged-in organizer
@@ -72,7 +70,33 @@ namespace EventPlanner.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            return View();
+            // Retrieve Organizer from session
+            var organiserIdNullable = HttpContext.Session.GetInt32("OrganiserID");
+            if (!organiserIdNullable.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var organiserId = organiserIdNullable.Value;
+            Organiser organiser = _context.Organiser.Find(organiserId);
+            if (organiser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var categories = _context.Category.ToList();
+            
+            EventOrganiserViewModel eventOrganiserViewModel = new EventOrganiserViewModel()
+            {
+                Organiser = organiser,
+                Categories = categories,
+                Event = new Event
+                {
+                    EventCategory = new Category(),
+                    EventOrganiser = new Organiser()
+                }
+            };
+            
+            return View(eventOrganiserViewModel);
         }
 
         // POST: Events/Create
@@ -80,15 +104,18 @@ namespace EventPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,EventName,EventDescription,EventDate,TicketPrice,AvailableTickets")] Event @event)
+        public async Task<IActionResult> Create(EventOrganiserViewModel viewModel)
         {
+            viewModel.Event.EventCategory = await _context.Category.FindAsync(viewModel.SelectedCategoryId);
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
+                viewModel.Event.EventOrganiser =
+                    await _context.Organiser.FindAsync(viewModel.Organiser.OrganiserId);
+                _context.Add(viewModel.Event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(@event);
+            return View(viewModel);
         }
 
         // GET: Events/Edit/5
