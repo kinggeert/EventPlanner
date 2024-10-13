@@ -241,7 +241,7 @@ namespace EventPlanner.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Dashboard");
         }
 
         public IActionResult Purchase(int? id)
