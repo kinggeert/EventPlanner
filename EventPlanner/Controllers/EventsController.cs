@@ -28,6 +28,27 @@ namespace EventPlanner.Controllers
                 .Include(e => e.EventCategory)
                 .ToListAsync());
         }
+        
+        public ActionResult Dashboard()
+        {
+            // Retrieve OrganizerID from session
+            var organiserIdNullable = HttpContext.Session.GetInt32("OrganiserID");
+
+            if (!organiserIdNullable.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var organiserId = organiserIdNullable.Value;
+            
+            // Get events for the logged-in organizer
+            var events = _context.Events
+                .Where(e => e.EventOrganiser.OrganiserId == organiserId)
+                .Include(e => e.EventCategory)
+                .ToList();
+
+            return View(events); // Pass events to the view
+        }
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)

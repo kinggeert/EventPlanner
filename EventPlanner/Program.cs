@@ -10,6 +10,15 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<EventDb>();
+        
+        // Add session services
+        builder.Services.AddDistributedMemoryCache(); // Required for session state
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(20); // Set session timeout
+            options.Cookie.HttpOnly = true; // Ensure the session cookie is HTTP-only
+            options.Cookie.IsEssential = true; // Mark session cookie as essential
+        });
 
         var app = builder.Build();
 
@@ -25,6 +34,8 @@ public class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        
+        app.UseSession();
 
         app.UseAuthorization();
 

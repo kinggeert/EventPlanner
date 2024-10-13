@@ -1,0 +1,56 @@
+@model IEnumerable<EventPlanner.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<h1>Organised Events</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td colspan="6" style="padding: 0;">
+                <a asp-action="Details" asp-route-id="@item.EventId" style="display: block; text-decoration: none; color: inherit;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                <h3>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+                                </h3>
+                                @Html.DisplayFor(modelItem => item.EventDescription)
+                            </td>
+                            <td>
+                                €@Html.DisplayFor(modelItem => item.TicketPrice)
+                            </td>
+                            <td>
+                                @item.EventDate.ToString("dd-MM-yyyy")
+                                <br/>
+                                @Html.DisplayFor(modelItem => item.EventCategory.CategoryName)
+                            </td>
+                        </tr>
+                    </table>
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

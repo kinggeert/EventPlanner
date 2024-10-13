@@ -7,6 +7,7 @@ namespace EventPlanner.Data;
 public class EventDb : DbContext
 {
     public DbSet<Event> Events { get; set; }
+    public DbSet<Organiser> Organiser { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
