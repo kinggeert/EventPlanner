@@ -131,7 +131,30 @@ namespace EventPlanner.Controllers
             {
                 return NotFound();
             }
-            return View(@event);
+            
+            // Retrieve Organizer from session
+            var organiserIdNullable = HttpContext.Session.GetInt32("OrganiserID");
+            if (!organiserIdNullable.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var organiserId = organiserIdNullable.Value;
+            Organiser organiser = _context.Organiser.Find(organiserId);
+            if (organiser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var categories = _context.Category.ToList();
+            
+            EventOrganiserViewModel eventOrganiserViewModel = new EventOrganiserViewModel()
+            {
+                Organiser = organiser,
+                Categories = categories,
+                Event = @event
+            };
+            
+            return View(eventOrganiserViewModel);
         }
 
         // POST: Events/Edit/5
@@ -139,23 +162,27 @@ namespace EventPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,EventName,EventDescription,EventDate,TicketPrice,AvailableTickets")] Event @event)
+        public async Task<IActionResult> Edit(int id, EventOrganiserViewModel viewModel)
         {
-            if (id != @event.EventId)
+            if (id != viewModel.Event.EventId)
             {
                 return NotFound();
             }
 
+            viewModel.Event.EventCategory = await _context.Category.FindAsync(viewModel.SelectedCategoryId);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(@event);
+                    viewModel.Event.EventOrganiser =
+                        await _context.Organiser.FindAsync(viewModel.Organiser.OrganiserId);
+                    _context.Add(viewModel.Event);
+                    _context.Update(viewModel.Event);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.EventId))
+                    if (!EventExists(viewModel.Event.EventId))
                     {
                         return NotFound();
                     }
@@ -166,7 +193,7 @@ namespace EventPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@event);
+            return View(viewModel);
         }
 
         // GET: Events/Delete/5
