@@ -24,6 +24,7 @@ namespace EventPlanner.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Events
+                .Where(e => e.EventDate >= DateTime.Today)
                 .Include(e => e.EventCategory)
                 .ToListAsync());
         }
