@@ -19,12 +19,12 @@
             
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Event.EventName" class="control-label"></label>
+                <label asp-for="Event.EventName" class="control-label">Name</label>
                 <input asp-for="Event.EventName" class="form-control"/>
                 <span asp-validation-for="Event.EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Event.EventDescription" class="control-label"></label>
+                <label asp-for="Event.EventDescription" class="control-label">Description</label>
                 <input asp-for="Event.EventDescription" class="form-control"/>
                 <span asp-validation-for="Event.EventDescription" class="text-danger"></span>
             </div>
@@ -38,17 +38,17 @@
                 <span asp-validation-for="SelectedCategoryId" class="text-danger"></span>
             </div>            
             <div class="form-group">
-                <label asp-for="Event.EventDate" class="control-label"></label>
+                <label asp-for="Event.EventDate" class="control-label">Date</label>
                 <input asp-for="Event.EventDate" class="form-control"/>
                 <span asp-validation-for="Event.EventDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Event.TicketPrice" class="control-label"></label>
+                <label asp-for="Event.TicketPrice" class="control-label">Ticket price</label>
                 <input asp-for="Event.TicketPrice" class="form-control"/>
                 <span asp-validation-for="Event.TicketPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Event.AvailableTickets" class="control-label"></label>
+                <label asp-for="Event.AvailableTickets" class="control-label">Available tickets</label>
                 <input asp-for="Event.AvailableTickets" class="form-control"/>
                 <span asp-validation-for="Event.AvailableTickets" class="text-danger"></span>
             </div>
