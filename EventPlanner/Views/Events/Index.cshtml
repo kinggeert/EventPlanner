@@ -6,39 +6,30 @@
 
 <h1>Events</h1>
 
-<table class="table">
+<table class="table" style="width: 100%; table-layout: fixed;">
     <thead>
         <tr>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th></th>
+            <!-- Keep the number of columns minimal, you don't need empty headers here -->
+            <th style="width: 60%;"></th>
+            <th style="width: 20%;"></th>
+            <th style="width: 20%;"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td colspan="6" style="padding: 0;">
+            <td colspan="3" style="padding: 0;">
                 <a asp-action="Details" asp-route-id="@item.EventId" style="display: block; text-decoration: none; color: inherit;">
-                    <table style="width: 100%; border-collapse: collapse;">
+                    <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
                         <tr>
-                            <td>
-                                <h3>
-                                    @Html.DisplayFor(modelItem => item.EventName)
-                                </h3>
+                            <td style="width: 60%;">
+                                <h3>@Html.DisplayFor(modelItem => item.EventName)</h3>
                                 @Html.DisplayFor(modelItem => item.EventDescription)
                             </td>
-                            <td>
+                            <td style="width: 20%;">
                                 €@Html.DisplayFor(modelItem => item.TicketPrice)
                             </td>
-                            <td>
+                            <td style="width: 20%;">
                                 @item.EventDate.ToString("dd-MM-yyyy")
                                 <br/>
                                 @Html.DisplayFor(modelItem => item.EventCategory.CategoryName)

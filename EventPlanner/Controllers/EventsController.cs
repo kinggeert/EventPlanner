@@ -43,6 +43,7 @@ namespace EventPlanner.Controllers
             var events = _context.Events
                 .Where(e => e.EventOrganiser.OrganiserId == organiserId)
                 .Include(e => e.EventCategory)
+                .Include(e => e.PurchasedTickets)
                 .ToList();
 
             return View(events); // Pass events to the view
