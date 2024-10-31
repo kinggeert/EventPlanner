@@ -12,7 +12,7 @@ public class EventDb : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string connection =
-            @"Data Source=.\MSSQLSERVER01;Initial Catalog=EventDb;Integrated Security=true;TrustServerCertificate=true;";
+            @"Data Source=.;Initial Catalog=EventDb;Integrated Security=true;TrustServerCertificate=true;";
         optionsBuilder
             .UseSqlServer(connection)
             .ConfigureWarnings(warnings =>
